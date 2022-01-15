@@ -48,8 +48,9 @@ public abstract class Player : MappedObject, IDrawLine
 
 	// Buffers
 	protected Vector3			m_Direction;
+	protected Vector3         	m_hitEffect;
 	private Coroutine 			m_GrowCoroutine;
-	protected List<GameObject>	m_SearchBuffer;
+	protected List<MappedObject>	m_SearchBuffer;
 	private Coroutine           m_SpeedPowerUpCoroutine;
 	private Coroutine           m_SizePowerUpCoroutine;
 
@@ -120,7 +121,7 @@ public abstract class Player : MappedObject, IDrawLine
 		m_BrushData = _Brush;
 
 		// Buffers
-		m_SearchBuffer = new List<GameObject> ();
+		m_SearchBuffer = new List<MappedObject> ();
 
 		// Runtime
 		GameObject brushObject = Instantiate (_Brush.m_Prefab, m_Transform) as GameObject;
@@ -286,8 +287,8 @@ public abstract class Player : MappedObject, IDrawLine
 
         for (int i = 0; i < m_SearchBuffer.Count; ++i)
         {         
-            PowerUp powerUp = m_SearchBuffer[i].GetComponent<PowerUp>();
-            if (powerUp != null && powerUp.ready)
+            PowerUp powerUp = m_SearchBuffer[i] as PowerUp;
+            if (powerUp.ready)
                 GetPowerUp(powerUp);
         }
 	}

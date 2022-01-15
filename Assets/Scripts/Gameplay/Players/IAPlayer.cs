@@ -80,10 +80,10 @@ public class IAPlayer : Player
 		    MapManager.FindEntities(EntityType.PowerUp, m_Transform.position, m_SqrCheckRadius * 5f, ref m_SearchBuffer, LayerMask.NameToLayer("ImportantPowerUp"));
 		    for (int i = 0; i < m_SearchBuffer.Count; ++i)
 		    {
-		    	GameObject obj = m_SearchBuffer[i];
+		    	MappedObject obj = m_SearchBuffer[i];
             
 		    	// Check power up behaviour
-		    	PowerUp powerUp = obj.GetComponent<PowerUp>();
+		    	PowerUp powerUp = obj as PowerUp;
 		    	if (powerUp != null)
                 {
                     Follow(powerUp.transform, 0.5f);
@@ -91,21 +91,25 @@ public class IAPlayer : Player
                 }
 		    }
 		}
-
+		List<MappedObject> allSearchBuffer = new List<MappedObject>();
 		MapManager.FindEntities(EntityType.Player, m_Transform.position, m_SqrCheckRadius, ref m_SearchBuffer);
-        for (int i = 0; i < m_SearchBuffer.Count; ++i)
+		allSearchBuffer.AddRange(m_SearchBuffer);
+		MapManager.FindEntities(EntityType.PowerUp, m_Transform.position, m_SqrCheckRadius, ref m_SearchBuffer);
+		allSearchBuffer.AddRange(m_SearchBuffer);
+
+		for (int i = 0; i < allSearchBuffer.Count; ++i)
         {
-            GameObject obj = m_SearchBuffer[i];
+            MappedObject obj = allSearchBuffer[i];
 
 			// Check power up behaviour
-			PowerUp powerUp = obj.GetComponent<PowerUp>();
+			PowerUp powerUp = obj as PowerUp;
 			if (powerUp != null && Random.Range(0, 100) < m_PowerUpChasing)
 			{
 				Follow(powerUp.transform, 0.4f);
 				return;
 			}
 
-			Player player = obj.GetComponent<Player>();
+			Player player = obj as Player;
 			if (player != null)
 			{
 				if (Random.Range(0, 100) < m_Agressivity && player.m_Rank == m_Rank - 1)
@@ -133,6 +137,11 @@ public class IAPlayer : Player
 
 		m_CheckRate = c_CheckRate;
 		ChangePhase(IABehaviour.RANDOM);
+    }
+
+	private void CheckFollowPowerUps()
+    {
+
     }
 
 	private void ChangePhase(IABehaviour _Behaviour)
@@ -236,7 +245,7 @@ public class IAPlayer : Player
 		m_Direction = m_Forward * GetSpeed();
 
 		Vector3 pos = m_Transform.position;
-		pos += m_Direction * Time.deltaTime;
+		pos += (m_Direction + m_hitEffect) * Time.deltaTime;
 		ClampPosition(ref pos);
 		m_Transform.position = pos;
 

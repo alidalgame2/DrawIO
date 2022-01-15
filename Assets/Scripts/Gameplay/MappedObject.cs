@@ -19,13 +19,13 @@ public abstract class MappedObject : MonoBehaviour
 	protected void RegisterMap(EntityType _EntitiyType)
 	{
 		m_entityType = _EntitiyType;
-		MapManager.RegisterEntity (m_entityType, gameObject);
+		MapManager.RegisterEntity (m_entityType, this);
 	}
 
 
 
 	protected void UnregisterMap()
 	{
-		MapManager.UnregisterEntity (m_entityType, gameObject);
+		MapManager.UnregisterEntity (m_entityType, this);
 	}
 }

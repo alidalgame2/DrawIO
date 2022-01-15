@@ -9,7 +9,7 @@ public class MapManager : SingletonMB<MapManager>
 
     public static float s_TileSize = 10.0f;
 
-    private Dictionary<EntityType, List<GameObject>> m_Entities;
+    private Dictionary<EntityType, List<MappedObject>> m_Entities;
     private bool m_IsInitialized = false;
     private float m_SqrTileFactor;
 
@@ -17,7 +17,7 @@ public class MapManager : SingletonMB<MapManager>
 
     #region External calls
 
-    public static void RegisterEntity(EntityType _EntityType, GameObject _Entity)
+    public static void RegisterEntity(EntityType _EntityType, MappedObject _Entity)
     {
         if (!Instance.initialized)
             Instance.Init();
@@ -25,16 +25,16 @@ public class MapManager : SingletonMB<MapManager>
        Instance.AddEntity(_EntityType, _Entity);
     }
 
-    public static void UnregisterEntity(EntityType entitiyType, GameObject entity)
+    public static void UnregisterEntity(EntityType _EntitiyType, MappedObject _Entity)
     {
         // End of the game protection
         if (Instance == null)
             return;
 
-        Instance.m_Entities[entitiyType].Remove(entity);
+        Instance.m_Entities[_EntitiyType].Remove(_Entity);
     }
 
-    public static void FindEntities(EntityType _EntitiyType, Vector3 _Position, float _SqrRadius, ref List<GameObject> _Results, int _Layer = -1)
+    public static void FindEntities(EntityType _EntitiyType, Vector3 _Position, float _SqrRadius, ref List<MappedObject> _Results, int _Layer = -1)
     {
         Instance.Internal_FindEntities(_EntitiyType, _Position, _SqrRadius, ref _Results, _Layer);
     }
@@ -56,28 +56,28 @@ public class MapManager : SingletonMB<MapManager>
     private void Init()
     {
         m_IsInitialized = true;
-        m_Entities = new Dictionary<EntityType, List<GameObject>>();
+        m_Entities = new Dictionary<EntityType, List<MappedObject>>();
         foreach (EntityType entityValue in Enum.GetValues(typeof(EntityType)))
         {
-            m_Entities.Add(entityValue, new List<GameObject>());
+            m_Entities.Add(entityValue, new List<MappedObject>());
         }
 
         m_SqrTileFactor = s_TileSize / Mathf.Sqrt(Mathf.PI);
         m_SqrTileFactor *= m_SqrTileFactor;
     }
 
-    private void AddEntity(EntityType _EntitiyType, GameObject _Entity)
+    private void AddEntity(EntityType _EntitiyType, MappedObject _Entity)
     {
         m_Entities[_EntitiyType].Add(_Entity);
     }
 
-    private void Internal_FindEntities(EntityType _EntityType, Vector3 _Position, float _SqrRadius, ref List<GameObject> _Results, int _Layer)
+    private void Internal_FindEntities(EntityType _EntityType, Vector3 _Position, float _SqrRadius, ref List<MappedObject> _Results, int _Layer)
     {
         _Results.Clear();
-        List<GameObject> _Entities = m_Entities[_EntityType];
-        foreach (GameObject entity in _Entities)
+        List<MappedObject> _Entities = m_Entities[_EntityType];
+        foreach (MappedObject entity in _Entities)
         {
-            if (entity == null || (_Layer != -1 && entity.layer != _Layer))
+            if (entity == null || (_Layer != -1 && entity.gameObject.layer != _Layer))
                 continue;
 
             if ((entity.transform.position - _Position).sqrMagnitude < _SqrRadius)
@@ -155,7 +155,7 @@ public class MapManager : SingletonMB<MapManager>
         string names = "";
         foreach (EntityType entityKey in m_Entities.Keys)
         {
-            List<GameObject> entityList = m_Entities[entityKey];
+            List<MappedObject> entityList = m_Entities[entityKey];
             for (int i = 0; i < entityList.Count; i++)
             {
                 if (entityList[i] == null)
