@@ -61,10 +61,8 @@ public class RVEndView : View<RVEndView> {
         }
     }
 
-    protected override void Update()
+    protected void Update()
     {
-        base.Update();
-
         if (m_Active)
         {
             m_Timer += Time.deltaTime;
@@ -72,7 +70,6 @@ public class RVEndView : View<RVEndView> {
             if (m_Timer >= m_TimerRevive)
                 OnClickContinueButton();
         }
-
     }
 
     private void OnClickRVButton()

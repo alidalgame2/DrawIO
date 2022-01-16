@@ -39,9 +39,8 @@ public class PreEndView : View<PreEndView> {
         m_Level = m_StatsManager.GetPlayerLevel();
     }
 
-    protected override void Update()
+    protected void Update()
     {
-        base.Update();
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Alpha1))
             StartCoroutine(PreEndCoroutine());

@@ -55,9 +55,8 @@ public class LoadingView : View<LoadingView> {
 		m_GoImage.color = _Color;
     }
 
-    protected override void Update()
+    protected void Update()
     {
-        base.Update();
         if (Input.GetMouseButtonDown(0) && m_GameManager.currentPhase == GamePhase.LOADING && m_LoadingFinish)
             m_GameManager.ChangePhase(GamePhase.GAME);
     }

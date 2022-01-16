@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,9 +16,6 @@ public class View<T> : SingletonMB<T> where T : MonoBehaviour
 
 	// Buffers
 	private float 			m_StartTime;
-	private float 			m_Duration;
-	private bool			m_InTransition;
-	private bool 			m_InOrOut;
 
 	protected virtual void Awake()
 	{
@@ -35,36 +33,63 @@ public class View<T> : SingletonMB<T> where T : MonoBehaviour
 
 	protected virtual void OnGamePhaseChanged (GamePhase _GamePhase) {}
 
-	public void Transition(bool _InOrOut)
+	public void Transition(bool _Appear)
 	{
-		m_Visible = _InOrOut;
-
-		m_StartTime = Time.time;
-		m_InTransition = true;
-		m_InOrOut = _InOrOut;
-		m_Duration = _InOrOut ? m_FadeInDuration : m_FadeOutDuration;
-		m_Group.interactable = false;
-		m_Group.blocksRaycasts = false;
+		m_Visible = _Appear;
+		if(_Appear)
+        {
+			appearDisappearCoroutine = Appear();
+			return;
+		}
+		appearDisappearCoroutine = Disappear();
 	}
 
-	protected virtual void Update()
-	{
-		if (m_InTransition)
-		{
-			float time = Time.time - m_StartTime;
-			float percent = time / m_Duration;
+	private Coroutine appearDisappearCoroutine;
 
-			if (percent < 1.0f)
-			{
-				m_Group.alpha = m_InOrOut ? percent : (1.0f - percent);
-			}
-			else
-			{
-				m_InTransition = false;
-				m_Group.alpha = m_InOrOut ? 1.0f : 0.0f;
-				m_Group.interactable = m_InOrOut;
-				m_Group.blocksRaycasts = m_InOrOut;
-			}
+	public virtual void Initialize()
+	{
+		m_Group = GetComponent<CanvasGroup>();
+	}
+	public virtual Coroutine Appear()
+	{
+		StopAppearDisappearCoroutine();
+		return StartCoroutine(AppearRoutine());
+	}
+
+	public IEnumerator AppearRoutine()
+	{
+		while (m_Group.alpha < 1)
+		{
+			m_Group.alpha += Time.deltaTime / m_FadeInDuration;
+			yield return new WaitForEndOfFrame();
 		}
+		m_Group.blocksRaycasts = true;
+		m_Group.interactable = true;
+	}
+
+	public virtual Coroutine Disappear()
+	{
+		StopAppearDisappearCoroutine();
+		return StartCoroutine(DisappearRoutine());
+	}
+
+	private void StopAppearDisappearCoroutine()
+	{
+		if (appearDisappearCoroutine != null)
+		{
+			StopCoroutine(appearDisappearCoroutine);
+		}
+	}
+
+	public IEnumerator DisappearRoutine()
+	{
+		m_Group.blocksRaycasts = false;
+		m_Group.interactable = false;
+		while (m_Group.alpha > 0)
+		{
+			m_Group.alpha -= Time.deltaTime / m_FadeInDuration;
+			yield return new WaitForEndOfFrame();
+		}
+		
 	}
 }

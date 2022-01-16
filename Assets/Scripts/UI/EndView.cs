@@ -139,9 +139,8 @@ public class EndView : View<EndView>
         }
     }
 
-    protected override void Update()
+    protected void Update()
     {
-        base.Update();
         if (m_RefreshTimer <= Time.time)
         {
             m_RefreshTimer = Time.time + c_RefreshTime;

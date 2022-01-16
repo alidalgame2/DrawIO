@@ -21,10 +21,8 @@ public class WarningView : View<WarningView> {
 		m_BattleRoyaleManager = BattleRoyaleManager.Instance;
 	}
    
-	protected override void Update()
+	protected  void Update()
 	{
-		base.Update();
-
 		if (m_Playing) 
 		{
 			int alivePlayers = m_BattleRoyaleManager.GetAlivePlayersCount();
