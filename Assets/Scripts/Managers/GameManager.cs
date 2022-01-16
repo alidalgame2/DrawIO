@@ -338,7 +338,7 @@ public class GameManager : SingletonMB<GameManager>
         Player player = playerGo.GetComponent<Player>();
 
        
-        player.Init(m_PlayerNameData.PickName(), m_Brushs[m_PlayerSkinID], m_humanColor);
+        player.Init(m_PlayerNameData.PickName(), m_Skins[m_PlayerSkinID].Brush, m_humanColor);
 
         m_HumanPlayerTr = player.transform;
         m_BattleRoyaleManager.SetHumanPlayer(player);

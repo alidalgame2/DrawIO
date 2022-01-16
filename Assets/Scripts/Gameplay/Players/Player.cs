@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class Player : MappedObject, IDrawLine
 {
+	private const   float		 c_hitLossAmount = 5;
 	private const float 		c_LeaderboardRate = 1.0f;
     
 	private const float			c_MinSpeed = 50.0f;
@@ -170,7 +171,8 @@ public abstract class Player : MappedObject, IDrawLine
 		if (m_IsEliminated)
 			return;
 
-        if (m_Invincible)
+		m_hitEffect = Vector3.Lerp(m_hitEffect, Vector3.zero, Time.deltaTime * c_hitLossAmount);
+		if (m_Invincible)
         {
             if (Time.time - m_RespawnStartTime > Constants.c_PlayerInvincibilityDuration)
             {
@@ -204,6 +206,7 @@ public abstract class Player : MappedObject, IDrawLine
 		UpdateFollowingBrushes();
 
 		ComputeCollisions ();
+		ComputePlayerCollisions();
 	}
 
 	void UpdateFollowingBrushes()
@@ -278,6 +281,24 @@ public abstract class Player : MappedObject, IDrawLine
 		}      
 	}
 
+	public void ComputePlayerCollisions()
+    {
+		if (isDead)
+			return;
+
+		float size = GetSize() * 1.2f + 4f;
+		MapManager.FindEntities(EntityType.Player, transform.position, size * size, ref m_SearchBuffer);
+
+        for (int i = 0; i < m_SearchBuffer.Count; i++)
+        {
+			if(m_SearchBuffer[i] != this)
+            {
+				Player player = m_SearchBuffer[i] as Player;
+				player.Hit(m_Direction * 5);
+            }
+        }
+    }
+
     private void ComputeSubCollisions(Vector3 center, float size)
 	{
         if (isDead == true)
@@ -326,6 +347,11 @@ public abstract class Player : MappedObject, IDrawLine
 		m_WorldPercent -= c_WorldPercentGrowUp;
 		Grow (m_Size - c_OffsetSize);
 	}
+
+	public void Hit(Vector3 dir)
+    {
+		m_hitEffect = dir;
+    }
 
 	private void Grow(float _TargetSize)
 	{
