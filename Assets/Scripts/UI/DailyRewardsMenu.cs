@@ -1,18 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using TMPro;
 
 public class DailyRewardsMenu : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public DayElementUI[] m_DayElements;
+    public TextMeshProUGUI m_TotalCoinText;
+    
+    public void Init(int _TotalCoin, int[] _Amounts)
     {
-        
+        for (int i = 0; i < _Amounts.Length && i < m_DayElements.Length; i++)
+        {
+            m_DayElements[i].m_AmountText.text = _Amounts + "";
+        }
+        m_TotalCoinText.text = _TotalCoin + "";
     }
 
-    // Update is called once per frame
-    void Update()
+    public void HandleClaimButton()
     {
-        
+
     }
 }

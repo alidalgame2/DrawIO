@@ -1,0 +1,129 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5843057047528848436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08c9c5456074d4a83b08e8cf93c38d19, type: 3}
+  m_Name: Reward_dailyReward
+  m_EditorClassIdentifier: 
+  m_DisplayName: Daily Reward
+  m_Key: dailyReward
+  m_Tags: []
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_CooldownSeconds: 86400
+  m_CooldownDisplayUnits: 3
+  m_ExpirationSeconds: 86400
+  m_ExpirationDisplayUnits: 3
+  m_ResetIfExpired: 1
+  m_RewardItems:
+  - <key>k__BackingField: 9a358c38-7d73-4680-97bf-b81092268a57
+    m_Payout:
+      m_Exchanges:
+      - m_CatalogItem: {fileID: 3525359771259422255}
+        m_Amount: 100
+  - <key>k__BackingField: f00ddd4a-b8cd-4262-90ae-18d24585b849
+    m_Payout:
+      m_Exchanges:
+      - m_CatalogItem: {fileID: 3525359771259422255}
+        m_Amount: 100
+  - <key>k__BackingField: af6ae18a-3c37-475b-9616-e65f145aa94f
+    m_Payout:
+      m_Exchanges:
+      - m_CatalogItem: {fileID: 3525359771259422255}
+        m_Amount: 150
+  - <key>k__BackingField: c6ce905e-35e7-46f4-b285-18a049ae6fa2
+    m_Payout:
+      m_Exchanges:
+      - m_CatalogItem: {fileID: 3525359771259422255}
+        m_Amount: 150
+  - <key>k__BackingField: 08080fe0-7ecb-4bc9-a156-f92af3b4f9f5
+    m_Payout:
+      m_Exchanges:
+      - m_CatalogItem: {fileID: 3525359771259422255}
+        m_Amount: 200
+  - <key>k__BackingField: 620348b1-c6fd-4f74-bc5d-d7b000f70846
+    m_Payout:
+      m_Exchanges:
+      - m_CatalogItem: {fileID: 3525359771259422255}
+        m_Amount: 300
+  - <key>k__BackingField: 969cfec7-e229-491b-995f-a8acf4dd9100
+    m_Payout:
+      m_Exchanges:
+      - m_CatalogItem: {fileID: 3525359771259422255}
+        m_Amount: 500
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6d6d794703b5406883240f543e5b084, type: 3}
+  m_Name: GameFoundationCatalog
+  m_EditorClassIdentifier: 
+  m_TagCatalog: {fileID: 5237500416107848826}
+  m_Items:
+  - {fileID: 1976635755624361096}
+  - {fileID: 3525359771259422255}
+  - {fileID: -5843057047528848436}
+--- !u!114 &1976635755624361096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b81b157322addcd439104bd3c59b830b, type: 3}
+  m_Name: Store_main
+  m_EditorClassIdentifier: 
+  m_DisplayName: Main
+  m_Key: main
+  m_Tags: []
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_StoreItems: []
+--- !u!114 &3525359771259422255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6736b79f77dc474c8bc820c305c2c2e, type: 3}
+  m_Name: Currency_coin
+  m_EditorClassIdentifier: 
+  m_DisplayName: Coin
+  m_Key: coin
+  m_Tags: []
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_InitialBalance: 0
+  m_MaximumBalance: 0
+  m_Type: 0
+--- !u!114 &5237500416107848826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9190a04da29ae24ab35e05133ebf087, type: 3}
+  m_Name: _Catalog_Tags
+  m_EditorClassIdentifier: 
+  m_Tags: []
+  m_CatalogAsset: {fileID: 11400000}
