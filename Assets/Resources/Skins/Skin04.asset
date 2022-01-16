@@ -4,7 +4,8 @@
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -13,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SkinDatas
   Color: {fileID: 11400000, guid: f8a73bf7ef08540478d7e2d0702e0742, type: 2}
   Brush: {fileID: 11400000, guid: efeaa1ffb6e62475c9e04a0b60b7755e, type: 2}
+  skinSprites:
+  - {fileID: 21300000, guid: 649ab68a8cb3739448178cf352893ea0, type: 3}
+  - {fileID: 21300000, guid: 9cb403c30e3597042bc8ee15de3c808f, type: 3}

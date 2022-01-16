@@ -60,7 +60,7 @@ public class RVEndView : View<RVEndView> {
                 break;
         }
     }
-
+    //OPTIMIZATION HINT Checking always if it is m_Active Unnecessary work loads. I may use coroutine or UniRX system maybe even Animations to be more efficient. This Problems occurs in other UI sripts too. I optimized only the parent for my job.
     protected void Update()
     {
         if (m_Active)

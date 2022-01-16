@@ -14,11 +14,12 @@ public class MainMenuView : View<MainMenuView>
     public List<Image> m_ColoredImages;
     public List<Text> m_ColoredTexts;
 
-    public GameObject m_BrushGroundLight;
     public GameObject m_BrushesPrefab;
-    public int m_IdSkin = 0;
+    public GameObject m_PreviewButtonPrefab;
+   
     public GameObject m_PointsPerRank;
     public RankingView m_RankingView;
+    public int m_IdSkin = 0;
 
     [Header("Ranks")]
     public string[] m_Ratings;
@@ -46,13 +47,10 @@ public class MainMenuView : View<MainMenuView>
         switch (_GamePhase)
         {
             case GamePhase.MAIN_MENU:
-                m_BrushGroundLight.SetActive(true);
                 Transition(true);
                 break;
 
             case GamePhase.LOADING:
-                m_BrushGroundLight.SetActive(false);
-
                     m_BrushesPrefab.SetActive(false);
 
                 if (m_Visible)
@@ -105,7 +103,7 @@ public class MainMenuView : View<MainMenuView>
     {
         ChangeBrush(m_IdSkin + 1);
     }
-
+    ////OPTIMIZATION HINT: Something disasterous happening here, GetComponent is a performance consumer. Also why skin id processed that much ?. The way setting favore here against all the SOLID rules 
     public void ChangeBrush(int _NewBrush)
     {
         _NewBrush = Mathf.Clamp(_NewBrush, 0, GameManager.Instance.m_Skins.Count);

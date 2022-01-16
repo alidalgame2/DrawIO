@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Brush : MonoBehaviour
 {
     public enum EBrushType
@@ -12,6 +13,8 @@ public class Brush : MonoBehaviour
 
 	private const float         c_MaxNameSize = 12f;
 
+	//TODO delete the color
+	public Color testColor;
 	public Transform 			m_ModelTr;
 	public List<Renderer> 		m_Renderers;
     public List<Renderer>       m_DarkRenderers;
