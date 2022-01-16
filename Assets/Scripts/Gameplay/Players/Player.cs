@@ -330,10 +330,15 @@ public abstract class Player : MappedObject, IDrawLine
 		Grow (m_Size - c_OffsetSize);
 	}
 
-	public void Hit(Vector3 dir)
+	public void HitOther(Player enemy)
+	{
+		enemy.Hit(m_Direction);
+	}
+
+	private void Hit(Vector3 dir)
     {
-		m_hitEffect = dir;
-    }
+		m_hitEffect = (dir - m_Direction) * 5;
+	}
 
 	private void Grow(float _TargetSize)
 	{
@@ -363,11 +368,6 @@ public abstract class Player : MappedObject, IDrawLine
         Die();
 
         StartCoroutine(ReviveCoroutine());
-    }
-
-	public void HitOther(Player enemy)
-    {
-		enemy.Hit(m_Direction * 5);
     }
 
     public virtual void Die()
