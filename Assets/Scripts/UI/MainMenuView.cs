@@ -116,4 +116,5 @@ public class MainMenuView : View<MainMenuView>
         m_StatsManager.FavoriteSkin = m_IdSkin;
         GameManager.Instance.SetColor(GameManager.Instance.ComputeCurrentPlayerColor(true, 0));
     }
+
 }

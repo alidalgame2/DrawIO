@@ -61,6 +61,9 @@ public class GameManager : SingletonMB<GameManager>
     public bool m_IsPlaying = false;
     private float m_Level;
     public float level { get { return m_Level; } }
+
+    public Color HumanColor { get => m_humanColor; set => m_humanColor = value; }
+
     private float m_LastPowerUpTime;
     private float m_LastBrushTime = 0f;
     private float m_PowerUpRate;
@@ -77,6 +80,8 @@ public class GameManager : SingletonMB<GameManager>
     private PlayerNameData m_PlayerNameData;
     private List<GameObject> m_Objects; // Powerups and other map objects
     private List<Player> m_OrderedPlayers;
+
+    private Color m_humanColor;
 
     void Awake()
     {
@@ -148,11 +153,20 @@ public class GameManager : SingletonMB<GameManager>
     public void SetColor(int colorIndex)
     {
         colorIndex = Mathf.Min(m_Colors.Count - 1, colorIndex);
-        Color humanColor = m_Colors[colorIndex];
-        RVEndView.Instance.SetTitleColor(humanColor);
-        m_MainMenuView.SetTitleColor(humanColor);
-        LoadingView.Instance.SetTitleColor(humanColor);
+        m_humanColor = m_Colors[colorIndex];
+        RVEndView.Instance.SetTitleColor(m_humanColor);
+        m_MainMenuView.SetTitleColor(m_humanColor);
+        LoadingView.Instance.SetTitleColor(m_humanColor);
     }
+
+    public void SetNewColor(Color color)
+    {
+        m_humanColor = color;
+        RVEndView.Instance.SetTitleColor(m_humanColor);
+        m_MainMenuView.SetTitleColor(m_humanColor);
+        LoadingView.Instance.SetTitleColor(m_humanColor);
+    }
+
 
     public void ChangePhase(GamePhase _GamePhase)
     {
@@ -168,7 +182,8 @@ public class GameManager : SingletonMB<GameManager>
                 m_LastPowerUpTime = Time.time;
                 m_PowerUpRate = Random.Range(c_MinPowerUpRate, c_MaxPowerUpRate);
                 m_Level = m_StatsManager.GetLevel();
-                PopPlayers();
+                //TODO Debug PopPlayers();
+                NewPopPlayers();
 
                 if (m_OrderedPlayers == null)
                     m_OrderedPlayers = new List<Player>();
@@ -231,10 +246,24 @@ public class GameManager : SingletonMB<GameManager>
 
         for (int i = 0; i < Constants.s_PlayerCount; ++i)
         {
-            Player newPlayer = PopPlayer(humanSpawned == false, m_PopPoints[i], i);
+            Player newPlayer = PopPlayer(humanSpawned == false, m_PopPoints[i], i); //OPTIMIZATION HINT: Checking Unnecessarily for spawned player
 
             m_Players.Add(newPlayer);
             humanSpawned = true;
+        }
+
+        m_BattleRoyaleManager.SetPlayers(m_Players);
+    }
+
+    private void NewPopPlayers()
+    {
+        m_Players = new List<Player>();
+        m_Players.Add(PopHuman(m_PopPoints[0]));
+
+        for (int i = 1; i < Constants.s_PlayerCount; ++i)
+        {
+            Player newPlayer = PopPlayer(false, m_PopPoints[i], i); //OPTIMIZATION HINT: Checking Unnecessarily for spawned player
+            m_Players.Add(newPlayer);
         }
 
         m_BattleRoyaleManager.SetPlayers(m_Players);
@@ -303,30 +332,19 @@ public class GameManager : SingletonMB<GameManager>
         return player;
     }
 
-    private Player PopTournamentPlayer(TournamentPlayer _TournamentPlayer, Vector3 _Position, int _Index)
+    private Player PopHuman(Vector3 _Position)
     {
-        GameObject playerGo = null;
-        Player player = null;
+        GameObject playerGo = Instantiate( m_HumanPlayer, _Position, Quaternion.identity) as GameObject;
+        Player player = playerGo.GetComponent<Player>();
 
-        playerGo = Instantiate((_TournamentPlayer.m_Human == true) ? m_HumanPlayer : m_IAPlayer, _Position, Quaternion.identity) as GameObject;
-        player = playerGo.GetComponent<Player>();
+       
+        player.Init(m_PlayerNameData.PickName(), m_Brushs[m_PlayerSkinID], m_humanColor);
 
-#if UNITY_EDITOR
-        Debug.Log("m_PlayerSkinID : " + m_PlayerSkinID);
-        Debug.Log("Human : " + _TournamentPlayer.m_Human);
-#endif
-
-        _TournamentPlayer.m_ColorIndex = _Index;
-        player.Init(_TournamentPlayer.m_PlayerName, m_Brushs[_TournamentPlayer.m_BrushIndex], m_Colors[_Index]);
-
-        if (_TournamentPlayer.m_Human)
-        {
-            m_HumanPlayerTr = player.transform;
-            m_BattleRoyaleManager.SetHumanPlayer(player);
-        }
+        m_HumanPlayerTr = player.transform;
+        m_BattleRoyaleManager.SetHumanPlayer(player);
 
         if (onPlayerSpawned != null)
-            onPlayerSpawned.Invoke(player, _Index);
+            onPlayerSpawned.Invoke(player, 0);
 
         return player;
     }
