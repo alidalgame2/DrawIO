@@ -48,8 +48,8 @@ public class SettingsPanel : MonoBehaviour
 
     public void ClickSettingsButton()
     {
-        m_PanelVisible = !m_PanelVisible;
-        m_BarAnim.SetBool("Visible", m_PanelVisible);
+        OptionsManager.Instance.m_OptionsMenu.gameObject.SetActive(true);
+        MainMenuView.Instance.gameObject.SetActive(false);
     }
 
     private void RefreshButtonsVisual()

@@ -15,31 +15,34 @@ public class DailyRewardsManager : SingletonMB<DailyRewardsManager>
 
     void Awake()
     {
-        int daysSinceLastClaim = 2;
-        coin = PlayerPrefs.GetInt("Coin", 0);
-        m_DailyRewardsMenu.Init(coin, m_RewardDatabase);
-        m_currentReward = m_RewardDatabase[0];
-        
-        m_claimCount = PlayerPrefs.GetInt("ClaimCount", 0);
-        if (PlayerPrefs.HasKey("LastClaimDate"))
+        if(OptionsManager.Instance.DailyRewardsActive)
         {
-            string dateString = PlayerPrefs.GetString("LastClaimDate");
-            DateTime.TryParse(dateString, out m_lastClaimDate);
-            daysSinceLastClaim = (DateTime.Now - m_lastClaimDate).Days;
-        }
+            int daysSinceLastClaim = 2;
+            coin = PlayerPrefs.GetInt("Coin", 0);
+            m_DailyRewardsMenu.Init(coin, m_RewardDatabase);
+            m_currentReward = m_RewardDatabase[0];
 
-        if (daysSinceLastClaim == 0)
-        {
-            m_currentReward = 0;
-        }
-        else if (daysSinceLastClaim != 0)
-        {
-            if (daysSinceLastClaim == 1)
+            m_claimCount = PlayerPrefs.GetInt("ClaimCount", 0);
+            if (PlayerPrefs.HasKey("LastClaimDate"))
             {
-                m_currentReward = m_RewardDatabase[Mathf.Min(m_claimCount, m_RewardDatabase.Length - 1)];
+                string dateString = PlayerPrefs.GetString("LastClaimDate");
+                DateTime.TryParse(dateString, out m_lastClaimDate);
+                daysSinceLastClaim = (DateTime.Now - m_lastClaimDate).Days;
             }
-            m_DailyRewardsMenu.SetTheDay(m_claimCount);
-            m_DailyRewardsMenu.gameObject.SetActive(true);
+
+            if (daysSinceLastClaim == 0)
+            {
+                m_currentReward = 0;
+            }
+            else if (daysSinceLastClaim != 0)
+            {
+                if (daysSinceLastClaim == 1)
+                {
+                    m_currentReward = m_RewardDatabase[Mathf.Min(m_claimCount, m_RewardDatabase.Length - 1)];
+                }
+                m_DailyRewardsMenu.SetTheDay(m_claimCount);
+                m_DailyRewardsMenu.gameObject.SetActive(true);
+            }
         }
     }
 

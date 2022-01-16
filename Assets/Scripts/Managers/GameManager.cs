@@ -85,6 +85,7 @@ public class GameManager : SingletonMB<GameManager>
 
     void Awake()
     {
+        OptionsManager.Instance.Init();
 #if UNITY_EDITOR
         if (m_SaveCleared == false)
         {
@@ -94,7 +95,7 @@ public class GameManager : SingletonMB<GameManager>
         PlayerPrefs.SetInt(Constants.c_LevelSave, m_DebugLevel);
 #endif
 
-        Application.targetFrameRate = 600;
+        Application.targetFrameRate = 60;
 
         // Cache
         m_StatsManager = StatsManager.Instance;
@@ -111,6 +112,7 @@ public class GameManager : SingletonMB<GameManager>
 
         List<ColorData> colorsData = new List<ColorData>(Resources.LoadAll<ColorData>("Colors"));
         m_Colors = new List<Color>();
+
         for (int i = 0; i < colorsData.Count; ++i)
         {
             ColorData colorData = colorsData[i];
@@ -182,8 +184,14 @@ public class GameManager : SingletonMB<GameManager>
                 m_LastPowerUpTime = Time.time;
                 m_PowerUpRate = Random.Range(c_MinPowerUpRate, c_MaxPowerUpRate);
                 m_Level = m_StatsManager.GetLevel();
-                //TODO Debug PopPlayers();
-                NewPopPlayers();
+                if(OptionsManager.Instance.BrushSelectionActive)
+                {
+                    NewPopPlayers();
+                }
+                else
+                {
+                    PopPlayers();
+                }
 
                 if (m_OrderedPlayers == null)
                     m_OrderedPlayers = new List<Player>();
